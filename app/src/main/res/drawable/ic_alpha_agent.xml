@@ -4,15 +4,39 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
+    android:viewportWidth="108"
+    android:viewportHeight="108">
 
+    <!-- Background -->
     <path
         android:fillColor="#050505"
-        android:pathData="M0,0 L24,0 L24,24 L0,24 Z" />
+        android:pathData="M0,0 L108,0 L108,108 L0,108 Z" />
 
+    <!-- ALPHA -->
     <path
         android:fillColor="#D4AF37"
-        android:pathData="M12,2 L22,22 L17,22 L15,17 L9,17 L7,22 L2,22 Z M10.5,13 L13.5,13 L12,8 Z" />
+        android:pathData="
+            M7,68 L7,40 L13,40 L13,68 Z
+            M17,68 L17,40 L24,40 L24,62 L30,62 L30,68 Z
+            M34,68 L34,40 L41,40 L41,62 L47,62 L47,68 Z
+            M51,68 L51,40 L58,40 L58,62 L64,62 L64,68 Z
+            M70,68 L70,40 L101,40 L101,46 L77,46
+            L77,51 L96,51 L96,57 L77,57
+            L77,62 L101,62 L101,68 Z" />
+
+    <!-- Premium line -->
+    <path
+        android:fillColor="#D4AF37"
+        android:pathData="M7,76 L101,76 L101,79 L7,79 Z" />
+
+    <!-- AI diamond -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,22 L60,28 L54,34 L48,28 Z" />
+
+    <!-- Small center accent -->
+    <path
+        android:fillColor="#D4AF37"
+        android:pathData="M52,27 L54,25 L56,27 L54,29 Z" />
 
 </vector>
