@@ -7,32 +7,121 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
+    <!-- Dark background -->
     <path
-        android:fillColor="#050505"
+        android:fillColor="#070816"
         android:pathData="M0,0 L108,0 L108,108 L0,108 Z" />
 
+    <!-- Outer neon-blue frame -->
     <path
-        android:fillColor="#D4AF37"
+        android:fillColor="#00000000"
+        android:strokeColor="#00D9FF"
+        android:strokeWidth="2"
+        android:pathData="M5,5 L103,5 L103,103 L5,103 Z" />
+
+    <!-- A -->
+    <path
+        android:fillColor="#00E5FF"
         android:pathData="
-        M6,70 L12,38 L19,38 L25,70 L19,70 L18,64 L13,64 L12,70 Z
-        M14,59 L17,59 L15.5,49 Z
+        M7,72
+        L13,36
+        L20,36
+        L26,72
+        L20,72
+        L18,62
+        L11,62
+        L10,72
+        Z
+        M12,57
+        L17,57
+        L15,45
+        Z" />
 
-        M29,70 L29,38 L35,38 L35,64 L45,64 L45,70 Z
-
-        M49,70 L49,38 L55,38 L55,64 L65,64 L65,70 Z
-
-        M69,70 L69,38 L75,38 L75,64 L85,64 L85,70 Z
-
-        M89,70 L89,38 L103,38 L103,44 L95,44
-        L95,51 L102,51 L102,57 L95,57
-        L95,64 L103,64 L103,70 Z" />
-
+    <!-- L -->
     <path
-        android:fillColor="#D4AF37"
-        android:pathData="M8,78 L100,78 L100,81 L8,81 Z" />
+        android:fillColor="#39A7FF"
+        android:pathData="
+        M30,36
+        L36,36
+        L36,66
+        L46,66
+        L46,72
+        L30,72
+        Z" />
 
+    <!-- P -->
+    <path
+        android:fillColor="#7B61FF"
+        android:pathData="
+        M50,36
+        L61,36
+        C68,36 71,40 71,49
+        C71,57 67,61 61,61
+        L56,61
+        L56,72
+        L50,72
+        Z
+        M56,42
+        L56,55
+        L61,55
+        C64,55 65,53 65,49
+        C65,44 64,42 61,42
+        Z" />
+
+    <!-- H -->
+    <path
+        android:fillColor="#9B5CFF"
+        android:pathData="
+        M75,36
+        L81,36
+        L81,50
+        L88,50
+        L88,36
+        L94,36
+        L94,72
+        L88,72
+        L88,56
+        L81,56
+        L81,72
+        L75,72
+        Z" />
+
+    <!-- A -->
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="
+        M92,72
+        L97,36
+        L103,36
+        L108,72
+        L102,72
+        L101,62
+        L96,62
+        L98,72
+        Z
+        M97,57
+        L101,57
+        L99,45
+        Z" />
+
+    <!-- Neon diamond -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M54,20 L61,27 L54,34 L47,27 Z" />
+        android:pathData="
+        M54,13
+        L60,19
+        L54,25
+        L48,19
+        Z" />
+
+    <!-- Bottom neon line -->
+    <path
+        android:fillColor="#00D9FF"
+        android:pathData="
+        M25,82
+        L83,82
+        L83,85
+        L25,85
+        Z" />
 
 </vector>
