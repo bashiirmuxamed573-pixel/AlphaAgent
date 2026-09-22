@@ -6,8 +6,11 @@
 
     <application
         android:allowBackup="true"
-        android:label="Alpha Agent"
-        android:theme="@style/Theme.AlphaAgent">
+        android:label="AlphaAgent"
+        android:icon="@drawable/ic_alpha_agent"
+        android:roundIcon="@drawable/ic_alpha_agent"
+        android:theme="@style/Theme.AlphaAgent"
+        android:supportsRtl="true">
 
         <activity
             android:name=".MainActivity"
@@ -23,7 +26,8 @@
         <service
             android:name=".AlphaAccessibilityService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
-            android:exported="false">
+            android:exported="false"
+            android:label="AlphaAgent Accessibility">
 
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
