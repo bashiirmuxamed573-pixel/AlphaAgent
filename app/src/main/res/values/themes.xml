@@ -4,13 +4,12 @@
 
     <style
         name="Theme.AlphaAgent"
-        parent="android:style/Theme.Material.NoActionBar">
+        parent="Theme.AppCompat.Light.NoActionBar">
 
         <item name="android:fontFamily">sans</item>
-        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor">#050505</item>
         <item name="android:navigationBarColor">#050505</item>
-        <item name="android:windowActionModeOverlay">true</item>
 
     </style>
 
