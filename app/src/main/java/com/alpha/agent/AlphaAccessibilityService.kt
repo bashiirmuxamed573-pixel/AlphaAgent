@@ -11,6 +11,7 @@ class AlphaAccessibilityService : AccessibilityService() {
 
     companion object {
         private const val TAG = "AlphaAgent"
+
         private const val WHATSAPP = "com.whatsapp"
         private const val WHATSAPP_BUSINESS = "com.whatsapp.w4b"
 
@@ -18,7 +19,8 @@ class AlphaAccessibilityService : AccessibilityService() {
         private const val API_KEY = "gemini_api_key"
     }
 
-    private val handler = Handler(Looper.getMainLooper())
+    private val handler =
+        Handler(Looper.getMainLooper())
 
     private var lastIncomingMessage = ""
     private var lastSentMessage = ""
@@ -29,25 +31,29 @@ class AlphaAccessibilityService : AccessibilityService() {
         Log.d(TAG, "AlphaAgent Accessibility connected")
     }
 
-    override fun onAccessibilityEvent(event: android.view.accessibility.AccessibilityEvent?) {
+    override fun onAccessibilityEvent(
+        event: android.view.accessibility.AccessibilityEvent?
+    ) {
         if (event == null) return
 
-        val packageName = event.packageName?.toString() ?: return
+        val packageName =
+            event.packageName?.toString() ?: return
 
         if (
             packageName != WHATSAPP &&
             packageName != WHATSAPP_BUSINESS
-        ) {
-            return
-        }
+        ) return
 
         if (processing) return
 
         handler.removeCallbacksAndMessages(null)
 
-        handler.postDelayed({
-            processWhatsApp()
-        }, 700)
+        handler.postDelayed(
+            {
+                processWhatsApp()
+            },
+            700
+        )
     }
 
     private fun processWhatsApp() {
@@ -60,7 +66,8 @@ class AlphaAccessibilityService : AccessibilityService() {
 
         if (messages.isEmpty()) return
 
-        val incoming = findLatestMessage(messages) ?: return
+        val incoming =
+            findLatestMessage(messages) ?: return
 
         if (incoming.isBlank()) return
 
@@ -68,20 +75,22 @@ class AlphaAccessibilityService : AccessibilityService() {
 
         if (incoming == lastSentMessage) return
 
-        val apiKey = getSharedPreferences(
-            PREFS,
-            MODE_PRIVATE
-        ).getString(API_KEY, null)
+        val apiKey =
+            getSharedPreferences(
+                PREFS,
+                MODE_PRIVATE
+            ).getString(API_KEY, null)
 
         if (apiKey.isNullOrBlank()) {
-            Log.d(TAG, "Gemini API key lama helin")
+            Log.d(
+                TAG,
+                "Gemini API key lama helin"
+            )
             return
         }
 
         lastIncomingMessage = incoming
         processing = true
-
-        Log.d(TAG, "Incoming WhatsApp: $incoming")
 
         GeminiClient.ask(
             apiKey,
@@ -90,14 +99,12 @@ class AlphaAccessibilityService : AccessibilityService() {
 
             handler.post {
 
-                if (answer != null && answer.isNotBlank()) {
-
-                    Log.d(TAG, "Gemini answer: $answer")
-
+                if (
+                    answer != null &&
+                    answer.isNotBlank()
+                ) {
                     sendWhatsAppMessage(answer)
-
                 } else {
-
                     Log.e(
                         TAG,
                         "Gemini error: $error"
@@ -113,8 +120,8 @@ class AlphaAccessibilityService : AccessibilityService() {
         node: AccessibilityNodeInfo,
         output: MutableList<String>
     ) {
-
-        node.text?.toString()
+        node.text
+            ?.toString()
             ?.trim()
             ?.takeIf { it.isNotEmpty() }
             ?.let {
@@ -127,7 +134,10 @@ class AlphaAccessibilityService : AccessibilityService() {
 
             if (child != null) {
 
-                collectText(child, output)
+                collectText(
+                    child,
+                    output
+                )
 
                 child.recycle()
             }
@@ -156,7 +166,8 @@ class AlphaAccessibilityService : AccessibilityService() {
             .asReversed()
             .firstOrNull { text ->
 
-                val clean = text.trim()
+                val clean =
+                    text.trim()
 
                 clean.isNotEmpty() &&
                 clean !in ignored &&
@@ -172,90 +183,107 @@ class AlphaAccessibilityService : AccessibilityService() {
         message: String
     ) {
 
-        val root = rootInActiveWindow
+        val root =
+            rootInActiveWindow
 
         if (root == null) {
             processing = false
             return
         }
 
-        val editTexts = root.findAccessibilityNodeInfosByViewId(
-            "com.whatsapp:id/entry"
-        )
+        var input: AccessibilityNodeInfo? = null
 
-        var input: AccessibilityNodeInfo? =
-            editTexts.firstOrNull()
+        val editTexts =
+            root.findAccessibilityNodeInfosByViewId(
+                "com.whatsapp:id/entry"
+            )
+
+        if (editTexts.isNotEmpty()) {
+            input = editTexts.first()
+        }
 
         if (input == null) {
-
-            input = findEditableNode(root)
+            input =
+                findEditableNode(root)
         }
 
         if (input == null) {
 
-            Log.e(TAG, "WhatsApp message input lama helin")
+            Log.e(
+                TAG,
+                "WhatsApp message input lama helin"
+            )
 
             processing = false
             return
         }
 
-        val arguments = Bundle()
+        val arguments =
+            Bundle()
 
         arguments.putCharSequence(
-            AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
+            AccessibilityNodeInfo
+                .ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE,
             message
         )
 
-        val changed = input.performAction(
-            AccessibilityNodeInfo.ACTION_SET_TEXT,
-            arguments
-        )
+        val changed =
+            input.performAction(
+                AccessibilityNodeInfo.ACTION_SET_TEXT,
+                arguments
+            )
 
         input.recycle()
 
         if (!changed) {
 
-            Log.e(TAG, "Fariinta lama gelin")
+            Log.e(
+                TAG,
+                "Fariinta lama gelin"
+            )
 
             processing = false
             return
         }
 
-        handler.postDelayed({
+        handler.postDelayed(
+            {
 
-            val currentRoot = rootInActiveWindow
+                val currentRoot =
+                    rootInActiveWindow
 
-            if (currentRoot != null) {
+                if (currentRoot != null) {
 
-                val sendButton =
-                    findSendButton(currentRoot)
+                    val sendButton =
+                        findSendButton(
+                            currentRoot
+                        )
 
-                if (sendButton != null) {
+                    if (sendButton != null) {
 
-                    lastSentMessage = message
+                        lastSentMessage =
+                            message
 
-                    sendButton.performAction(
-                        AccessibilityNodeInfo.ACTION_CLICK
-                    )
+                        sendButton.performAction(
+                            AccessibilityNodeInfo.ACTION_CLICK
+                        )
 
-                    sendButton.recycle()
+                        sendButton.recycle()
 
-                    Log.d(
-                        TAG,
-                        "WhatsApp message sent"
-                    )
-                } else {
+                    } else {
 
-                    Log.e(
-                        TAG,
-                        "Send button lama helin"
-                    )
+                        Log.e(
+                            TAG,
+                            "Send button lama helin"
+                        )
+                    }
                 }
-            }
 
-            processing = false
+                processing = false
 
-        }, 300)
+            },
+            500
+        )
     }
 
     private fun findEditableNode(
@@ -267,22 +295,23 @@ class AlphaAccessibilityService : AccessibilityService() {
             "android.widget.EditText" &&
             node.isEditable
         ) {
-            return node
+            return AccessibilityNodeInfo.obtain(node)
         }
 
         for (i in 0 until node.childCount) {
 
-            val child = node.getChild(i)
-                ?: continue
+            val child =
+                node.getChild(i)
+                    ?: continue
 
-            val result = findEditableNode(child)
-
-            if (result != null) {
-                child.recycle()
-                return result
-            }
+            val result =
+                findEditableNode(child)
 
             child.recycle()
+
+            if (result != null) {
+                return result
+            }
         }
 
         return null
@@ -291,6 +320,19 @@ class AlphaAccessibilityService : AccessibilityService() {
     private fun findSendButton(
         node: AccessibilityNodeInfo
     ): AccessibilityNodeInfo? {
+
+        val viewId =
+            node.viewIdResourceName ?: ""
+
+        if (
+            node.isClickable &&
+            (
+                viewId.endsWith(":id/send") ||
+                viewId.endsWith(":id/send_button")
+            )
+        ) {
+            return AccessibilityNodeInfo.obtain(node)
+        }
 
         val description =
             node.contentDescription
@@ -306,22 +348,23 @@ class AlphaAccessibilityService : AccessibilityService() {
                 description.contains("enviar")
             )
         ) {
-            return node
+            return AccessibilityNodeInfo.obtain(node)
         }
 
         for (i in 0 until node.childCount) {
 
-            val child = node.getChild(i)
-                ?: continue
+            val child =
+                node.getChild(i)
+                    ?: continue
 
-            val result = findSendButton(child)
-
-            if (result != null) {
-                child.recycle()
-                return result
-            }
+            val result =
+                findSendButton(child)
 
             child.recycle()
+
+            if (result != null) {
+                return result
+            }
         }
 
         return null

@@ -23,8 +23,8 @@ object GeminiClient {
             var connection: HttpURLConnection? = null
 
             try {
-                connection = URL(ENDPOINT)
-                    .openConnection() as HttpURLConnection
+                connection =
+                    URL(ENDPOINT).openConnection() as HttpURLConnection
 
                 connection.requestMethod = "POST"
                 connection.connectTimeout = 20000
@@ -45,10 +45,10 @@ object GeminiClient {
                     Waxaad tahay AlphaAgent.
 
                     Had iyo jeer ugu jawaab Af-Soomaali dabiici ah.
-                    Jawaabta ka dhig mid kooban oo ku habboon WhatsApp.
+                    Jawaabta ha noqoto mid kooban oo ku habboon WhatsApp.
                     Si edeb leh oo caqli leh uga jawaab.
 
-                    Fariinta qofka:
+                    Fariinta:
                     $message
                 """.trimIndent()
 
@@ -72,49 +72,58 @@ object GeminiClient {
 
                 connection.outputStream.use { output ->
                     output.write(
-                        body.toString().toByteArray(Charsets.UTF_8)
+                        body.toString()
+                            .toByteArray(Charsets.UTF_8)
                     )
                 }
 
                 val code = connection.responseCode
 
                 val stream =
-                    if (code in 200..299) {
+                    if (code in 200..299)
                         connection.inputStream
-                    } else {
+                    else
                         connection.errorStream
-                    }
 
-                val response = BufferedReader(
-                    InputStreamReader(stream, Charsets.UTF_8)
-                ).use { it.readText() }
+                val response =
+                    BufferedReader(
+                        InputStreamReader(
+                            stream,
+                            Charsets.UTF_8
+                        )
+                    ).use {
+                        it.readText()
+                    }
 
                 if (code !in 200..299) {
                     callback(
                         null,
-                        "Gemini API error $code"
+                        "Gemini API error $code\n$response"
                     )
                     return@Thread
                 }
 
                 val json = JSONObject(response)
 
-                val text = json
-                    .getJSONArray("candidates")
-                    .getJSONObject(0)
-                    .getJSONObject("content")
-                    .getJSONArray("parts")
-                    .getJSONObject(0)
-                    .getString("text")
-                    .trim()
+                val text =
+                    json
+                        .getJSONArray("candidates")
+                        .getJSONObject(0)
+                        .getJSONObject("content")
+                        .getJSONArray("parts")
+                        .getJSONObject(0)
+                        .getString("text")
+                        .trim()
 
                 callback(text, null)
 
             } catch (e: Exception) {
+
                 callback(
                     null,
                     e.message ?: "Gemini connection error"
                 )
+
             } finally {
                 connection?.disconnect()
             }

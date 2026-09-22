@@ -9,13 +9,9 @@
         typeViewTextChanged"
 
     android:accessibilityFeedbackType="feedbackGeneric"
-
     android:notificationTimeout="100"
-
     android:canRetrieveWindowContent="true"
-
     android:canPerformGestures="true"
-
     android:description="@string/accessibility_description"
-
     android:settingsActivity="com.alpha.agent.MainActivity" />
+
