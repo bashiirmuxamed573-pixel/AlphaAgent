@@ -51,3 +51,18 @@
     </application>
 
 </manifest>
+<service
+    android:name=".WhatsAppNotificationService"
+    android:label="AlphaAgent WhatsApp AI"
+    android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+    android:exported="false">
+
+    <intent-filter>
+        <action android:name="android.service.notification.NotificationListenerService" />
+    </intent-filter>
+
+    <meta-data
+        android:name="android.service.notification.default_filter_types"
+        android:value="conversations|alerting" />
+
+</service>
